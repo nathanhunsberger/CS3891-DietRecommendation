@@ -12,7 +12,7 @@ def get_necessary_data(df):
 
   fScaler = MinMaxScaler()
 
-  needed_cols = ['RecipeId', 'Name', 'RecipeCategory', 'Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent', 'Description']
+  needed_cols = ['RecipeId', 'Images', 'Name', 'RecipeCategory', 'Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent', 'Description']
 
   filtered_data = df[needed_cols]
 
@@ -25,7 +25,7 @@ def remove_non_alphabetic(input_string):
   return re.sub(r'[^a-zA-Z\s]', '', input_string)
 
 
-def get_seed_recipes(input, free_input, df, scaler, topn, df_tfidf, desc_model):
+def get_recipes_for_seed(input, free_input, df, scaler, topn, desc_model, df_tfidf):
   scaled_input = scaler.transform([input])
 
   sim_scores = cosine_similarity(df[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']],

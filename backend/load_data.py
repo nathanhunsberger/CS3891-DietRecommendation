@@ -2,8 +2,8 @@ import pandas as pd
 
 def get_recipe_data():
 
-    recipe_cols = ['RecipeId', 'RecipeName', 'Description', 'CalorieContent',
-                   'ProteinContent', 'FatContent', 'CarbohydrateContent']
+    recipe_cols = ['RecipeId', 'Name', 'RecipeCategory', 'Description', 'Calories',
+                   'ProteinContent', 'FatContent', 'CarbohydrateContent', 'Images']
 
     data_path = './Data/recipes.csv'
 
@@ -17,9 +17,3 @@ def get_recipe_data():
     reviews = reviews[reviews['RecipeId'].isin(recipes['RecipeId'])]
 
     return recipes, reviews
-
-
-
-
-
-get_recipe_data()
