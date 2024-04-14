@@ -23,7 +23,9 @@ def get_seed_recipes():
     carbs = request.args.get('carbs')
     free_input = request.args.get('free_input')
 
-    seeds = get_seed_recipes([], free_input, filtered_data, scaler, 10, desc_model, name_model)
+    seeds = get_seed_recipes([], free_input, filtered_data, scaler, 10, desc_model, df_tfidf)
+
+    return seeds.to_json()
 
 @app.route('/get-all-recommendations', methods=['GET'])
 def get_recommendations():
