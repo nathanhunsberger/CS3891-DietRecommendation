@@ -59,3 +59,55 @@ def get_recipes_for_seed(input, free_input, df, scaler, topn, desc_model, df_tfi
 
   seeds = sorted_scores.head(topn)
   return seeds
+
+
+def get_recipes_from_seeds(seed_ids, ratings, df, scaler, desc_model, df_tfidf):
+  needed_ids = [seed_ids[i] for i in range(len(seed_ids)) if ratings[i] > 3.0]
+
+  all_recs = pd.DataFrame()
+
+  for id in needed_ids:
+    recipe = df[df['RecipeId'] == id]
+    description = recipe['Description'].tolist()[0]
+
+    sim_scores = cosine_similarity(df[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']], recipe[
+      ['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']]).flatten()
+
+    curr_recipe_scores = df.assign(MacroScore=sim_scores)
+    curr_recipe_scores = curr_recipe_scores.sort_values('MacroScore', ascending=False)
+
+    tokenized_input = word_tokenize(description.lower())
+    inference_desc = desc_model.infer_vector(tokenized_input)
+    descriptions = desc_model.dv.most_similar([inference_desc], topn=desc_model.corpus_count)
+
+    description_scores = pd.DataFrame(descriptions, columns=['RecipeId', 'DescriptionScore'])
+
+    name = recipe['Name'].tolist()[0]
+    cleaned_input = remove_non_alphabetic(name).lower()
+    words = cleaned_input.split()
+    in_data = []
+    for word in words:
+      if word in df_tfidf:
+        in_data.append(word)
+
+    search_df = pd.DataFrame([df_tfidf[word] for word in in_data]).T
+    search_df['NameScore'] = search_df.sum(axis=1)
+    name_scores = search_df['NameScore'].tolist()
+
+    all_scores_recipes = df.assign(MacroScore=sim_scores)
+    all_scores_recipes = all_scores_recipes.assign(NameScore=name_scores)
+    all_scores_recipes = all_scores_recipes.merge(description_scores, on='RecipeId')
+
+    all_scores_recipes['TotalScore'] = 1 * all_scores_recipes['MacroScore'] + 0.05 * all_scores_recipes[
+      'NameScore'] + 0.75 * all_scores_recipes['DescriptionScore']
+
+    sorted_scores = all_scores_recipes.sort_values('TotalScore', ascending=False)
+
+    recs = sorted_scores.head(3)
+
+    recs[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']] = scaler.inverse_transform(
+      recs[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']])
+
+    all_recs = pd.concat([all_recs, recs])
+
+  return all_recs
