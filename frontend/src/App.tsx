@@ -1,16 +1,18 @@
 import * as React from "react"
 import { useState } from "react"
-
-import { ChakraProvider, theme } from "@chakra-ui/react"
+import { ColorModeSwitcher } from "./ColorModeSwitcher"
+import { ChakraProvider, Grid, theme } from "@chakra-ui/react"
 import { GetUserInformation } from "./GetUserInformation"
 import { Recipe } from "./recipeModel"
 import { RecipeCards } from "./RecipeCards"
 import { tempRecipes } from "./tmp"
 export const App = () => {
-  const [seeds, setSeeds] = useState<Recipe[]>(tempRecipes);
+  const [seeds, setSeeds] = useState<Recipe[]>([]);
   const [recommendations, setRecommendations] = useState<Recipe[]>([]);
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme} >
+      <Grid minH="100vh" p={3}>
+      <ColorModeSwitcher justifySelf="flex-end" />
       {recommendations.length > 0?
       <p>Recommendations:</p>
       :
@@ -22,6 +24,7 @@ export const App = () => {
       }
       </>
       }
+      </Grid>
     </ChakraProvider>
   )
 }
