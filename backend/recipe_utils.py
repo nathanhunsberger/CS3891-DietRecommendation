@@ -58,6 +58,8 @@ def get_recipes_for_seed(input, free_input, df, scaler, topn, desc_model, df_tfi
   sorted_scores = all_scores_recipes.sort_values('TotalScore', ascending=False)
 
   seeds = sorted_scores.head(topn)
+
+  seeds[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']] = scaler.inverse_transform(seeds[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']])
   return seeds
 
 
@@ -68,7 +70,10 @@ def get_recipes_from_seeds(seed_ids, ratings, df, scaler, desc_model, df_tfidf):
 
   for id in needed_ids:
     recipe = df[df['RecipeId'] == id]
-    description = recipe['Description'].tolist()[0]
+    if len(recipe['Description'].tolist()) > 0:
+      description = recipe['Description'].tolist()[0]
+    else:
+      description = ""
 
     sim_scores = cosine_similarity(df[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']], recipe[
       ['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']]).flatten()
@@ -102,7 +107,8 @@ def get_recipes_from_seeds(seed_ids, ratings, df, scaler, desc_model, df_tfidf):
       'NameScore'] + 0.75 * all_scores_recipes['DescriptionScore']
 
     sorted_scores = all_scores_recipes.sort_values('TotalScore', ascending=False)
-
+    if not all_recs.empty:
+      sorted_scores = sorted_scores[~sorted_scores['RecipeId'].isin(all_recs['RecipeId'])]
     recs = sorted_scores.head(3)
 
     recs[['Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent']] = scaler.inverse_transform(
