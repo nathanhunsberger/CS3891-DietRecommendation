@@ -5,5 +5,7 @@ export interface Recipe {
     calories: number,
     protein: number,
     fat: number,
-    carbs: number
+    carbs: number,
+    description?: string,
+    review?: number
   }

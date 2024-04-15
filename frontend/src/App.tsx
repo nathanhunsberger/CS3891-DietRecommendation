@@ -8,13 +8,19 @@ import { RecipeCards } from "./RecipeCards"
 import { tempRecipes } from "./tmp"
 export const App = () => {
   const [seeds, setSeeds] = useState<Recipe[]>(tempRecipes);
-
+  const [recommendations, setRecommendations] = useState<Recipe[]>([]);
   return (
     <ChakraProvider theme={theme}>
+      {recommendations.length > 0?
+      <p>Recommendations:</p>
+      :
+      <>
       {seeds.length === 0 ?
         <GetUserInformation setSeeds={setSeeds}/>
         :
-        <RecipeCards recipes={seeds}/>
+        <RecipeCards recipes={seeds} setRecommendations={setRecommendations}/>
+      }
+      </>
       }
     </ChakraProvider>
   )

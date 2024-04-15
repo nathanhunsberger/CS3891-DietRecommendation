@@ -115,7 +115,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                                 const response = await axios.request(options);
                                 const macros: any = response.data.data[values.dietType];
                                 const recipes = await fetchSeedRecipes(response.data.data.calorie, macros.protein, macros.fat, macros.carbs, values.description);
-                                console.log(recipes);
+                                setSeeds(recipes);
                                
                             } catch (error) {
                                 console.error(error);
