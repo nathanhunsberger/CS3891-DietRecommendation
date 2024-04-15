@@ -21,10 +21,10 @@ old_user_sim = old_user_similarity_creation(reviews)
 
 @app.route('/get-seeds', methods=['GET'])
 def get_seed_recipes():
-    calories = int(request.args.get('calories'))
-    protein = int(request.args.get('protein'))
-    fat = int(request.args.get('fat'))
-    carbs = int(request.args.get('carbs'))
+    calories = float(request.args.get('calories')) / 4
+    protein = float(request.args.get('protein')) / 4
+    fat = float(request.args.get('fat')) / 4
+    carbs = float(request.args.get('carbs')) / 4
     free_input = request.args.get('free_input')
 
     seeds = get_recipes_for_seed([calories, protein, fat, carbs], free_input, filtered_data, scaler, 10, desc_model,
@@ -50,6 +50,10 @@ def get_all_recommendations():
 
     all_recs = pd.concat([from_seed_recommendations, rating_recommendations.head(3)])
 
+    seed_ids_with_5 = set([seed_ids[i] for i in range(len(seed_ids)) if user_ratings[i] > 3])
+    print(seed_ids_with_5)
+    old_recipes = recipes[recipes['RecipeId'].isin(seed_ids_with_5)]
+    all_recs = pd.concat([old_recipes, all_recs])
     return all_recs.to_json(orient='records')
 
 

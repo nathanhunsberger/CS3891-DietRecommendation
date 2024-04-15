@@ -33,6 +33,7 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
       {recipes.length > 0 && (
         <VStack>
           <Text fontSize="3xl">{recipes[currentRecipeIndex].name}</Text>
+          <Text fontSize="xl">{recipes[currentRecipeIndex].description}</Text>
           <HStack>
           <Image src={recipes[currentRecipeIndex].image} alt={`Recipe ${currentRecipeIndex}`} />
           

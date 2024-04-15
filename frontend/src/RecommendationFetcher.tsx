@@ -1,6 +1,6 @@
 // RecommendationFetcher.ks
 import axios from 'axios';
-// import he from 'he';
+import he from 'he';
 
 function parseImageUrls(imageString: string): string {
   if (!imageString) {
@@ -8,7 +8,7 @@ function parseImageUrls(imageString: string): string {
   }
   // Remove the R-style vector notation and split into array
   const cleanedString = imageString.replace('c("', '').replace('")', '');
-  const urls = cleanedString.split('","');
+  const urls = cleanedString.split('", "');
   console.log(urls.map(url => decodeURIComponent(url.trim()))[0]);
   console.log(urls.map(url => decodeURIComponent(url.trim()))[0][0]);
   console.log("HELLOO");
@@ -30,12 +30,13 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
     if (response.data) {
       return response.data.map((item: any) => ({
         id: item.RecipeId,
-        name: decodeURI(item.Name),
+        name: he.decode(item.Name),
         image: parseImageUrls(item.Images), // Provide a default image if none exists here
         calories: item.Calories,
         protein: item.ProteinContent,
         fat: item.FatContent,
-        carbs: item.CarbohydrateContent
+        carbs: item.CarbohydrateContent,
+        description: he.decode(item.Description)
       }));
     }
     return [];
@@ -56,12 +57,14 @@ export const fetchRecommendations = async (seedIds: string[], ratings: string[])
     if (response.data) {
       return response.data.map((item: any) => ({
         id: item.RecipeId,
-        name: decodeURI(item.Name),
+        name: he.decode(item.Name),
         image: parseImageUrls(item.Images), // Provide a default image if none exists here
         calories: item.Calories,
         protein: item.ProteinContent,
         fat: item.FatContent,
-        carbs: item.CarbohydrateContent
+        carbs: item.CarbohydrateContent,
+        description: he.decode(item.Description),
+        instructions: item.RecipeInstructions
       }));
     }
     return [];
