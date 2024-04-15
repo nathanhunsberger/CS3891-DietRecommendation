@@ -3,15 +3,16 @@ import axios from 'axios';
 import he from 'he';
 
 function parseImageUrls(imageString: string): string {
-  if (!imageString) {
-    return ''; // Or return a default image array if yweou have a default image
+  if (!imageString || imageString === "character(0)") {
+    console.log('HEREE');
+    return 'https://pixy.org/src/12/121481.jpg'; // default image
   }
+  console.log(imageString);
   // Remove the R-style vector notation and split into array
   const cleanedString = imageString.replace('c("', '').replace('")', '');
   const urls = cleanedString.split('", "');
   console.log(urls.map(url => decodeURIComponent(url.trim()))[0]);
   console.log(urls.map(url => decodeURIComponent(url.trim()))[0][0]);
-  console.log("HELLOO");
   return urls.map(url => decodeURIComponent(url.trim()))[0];
 }
 
@@ -31,7 +32,7 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
       return response.data.map((item: any) => ({
         id: item.RecipeId,
         name: he.decode(item.Name),
-        image: parseImageUrls(item.Images), // Provide a default image if none exists here
+        image: parseImageUrls(item.Images),
         calories: item.Calories,
         protein: item.ProteinContent,
         fat: item.FatContent,

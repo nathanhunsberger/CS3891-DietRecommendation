@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Text, VStack, useColorModeValue, Badge } from '@chakra-ui/react';
 
 import { Recipe } from './recipeModel';
 import { fetchRecommendations } from './RecommendationFetcher';
@@ -11,46 +11,48 @@ interface Props {
 
 export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) => {
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
+  const bg = useColorModeValue("white", "gray.800");
+  const color = useColorModeValue("gray.800", "white");
+
   const handleRateAndNext = async (rating: number) => {
     recipes[currentRecipeIndex].review = rating;
     if (currentRecipeIndex < recipes.length - 1) {
       setCurrentRecipeIndex(currentRecipeIndex + 1); // Move to next recipe
     } else {
-      const recipeIDs = recipes.map( (recipe)=>{return recipe.id.toString()});
-      const reviews: string[] =  recipes.map( (recipe)=>{
-        if (recipe.review){
-          return recipe.review.toString()
-        }
-        return "0";
-      });
-      const recommendations = await fetchRecommendations(recipeIDs,reviews)
-      setRecommendations(recommendations)
+      const recipeIDs = recipes.map(recipe => recipe.id.toString());
+      const reviews = recipes.map(recipe => recipe.review?.toString() || "0");
+      const recommendations = await fetchRecommendations(recipeIDs, reviews);
+      setRecommendations(recommendations);
     }
   };
 
   return (
-    <Box textAlign="center" marginTop={20}>
+    <Box textAlign="center" mt="5" mx="auto" maxWidth="md" p="5" bg={bg} color={color} borderRadius="lg" boxShadow="2xl">
       {recipes.length > 0 && (
-        <VStack>
-          <Text fontSize="3xl">{recipes[currentRecipeIndex].name}</Text>
-          <Text fontSize="xl">{recipes[currentRecipeIndex].description}</Text>
-          <HStack>
-          <Image src={recipes[currentRecipeIndex].image} alt={`Recipe ${currentRecipeIndex}`} />
-          
-          <VStack>
-          <Text fontSize="xl">Calories: {recipes[currentRecipeIndex].calories}</Text>
-          <Text fontSize="xl">Protein: {recipes[currentRecipeIndex].protein}</Text>
-          <Text fontSize="xl">Fat: {recipes[currentRecipeIndex].fat}</Text>
-          <Text fontSize="xl">Carbs: {recipes[currentRecipeIndex].carbs}</Text>
+        <VStack spacing={5}>
+          <Image 
+            src={recipes[currentRecipeIndex].image} 
+            alt={`Recipe ${currentRecipeIndex}`} 
+            borderRadius="lg"
+            boxSize="300px"
+            objectFit="cover"
+          />
+          <VStack spacing={1}>
+            <Text fontSize="2xl" fontWeight="bold">{recipes[currentRecipeIndex].name}</Text>
+            <Text fontSize="md" fontStyle="italic">{recipes[currentRecipeIndex].description}</Text>
+            <HStack spacing={4}>
+              <Badge colorScheme="green" p="2">Calories: {recipes[currentRecipeIndex].calories}</Badge>
+              <Badge colorScheme="red" p="2">Protein: {recipes[currentRecipeIndex].protein}g</Badge>
+              <Badge colorScheme="purple" p="2">Fat: {recipes[currentRecipeIndex].fat}g</Badge>
+              <Badge colorScheme="orange" p="2">Carbs: {recipes[currentRecipeIndex].carbs}g</Badge>
+            </HStack>
           </VStack>
-          </HStack>
-          
-        
-         
-          <HStack>
-          {[1, 2, 3, 4, 5].map(rating => (
-            <Button key={rating} onClick={() => handleRateAndNext(rating)}>{rating}</Button>
-          ))}
+          <HStack spacing={2}>
+            {[1, 2, 3, 4, 5].map(rating => (
+              <Button key={rating} size="sm" colorScheme="blue" onClick={() => handleRateAndNext(rating)}>
+                Rate {rating}
+              </Button>
+            ))}
           </HStack>
         </VStack>
       )}
