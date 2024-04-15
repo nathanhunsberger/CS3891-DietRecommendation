@@ -4,16 +4,18 @@ import he from 'he';
 
 function parseImageUrls(imageString: string): string {
   if (!imageString || imageString === "character(0)") {
-    console.log('HEREE');
     return 'https://pixy.org/src/12/121481.jpg'; // default image
   }
-  console.log(imageString);
+  // console.log(imageString);
   // Remove the R-style vector notation and split into array
   const cleanedString = imageString.replace('c("', '').replace('")', '');
   const urls = cleanedString.split('", "');
-  console.log(urls.map(url => decodeURIComponent(url.trim()))[0]);
-  console.log(urls.map(url => decodeURIComponent(url.trim()))[0][0]);
-  return urls.map(url => decodeURIComponent(url.trim()))[0];
+  var image_to_use = urls.map(url => decodeURIComponent(url.trim()))[0];
+  if (image_to_use.charAt(0) === '"'){
+    image_to_use = image_to_use.substring(1,image_to_use.length - 1);
+  }
+  console.log(image_to_use);
+  return image_to_use;
 }
 
 // Function to fetch seed recipes based on user inputs
