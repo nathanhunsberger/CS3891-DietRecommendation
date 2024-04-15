@@ -49,6 +49,13 @@ export const GetUserInformation = () => {
     "7": "Very intense exercise daily, or physical job"
   };
 
+  const dietTypeRecord: Record<string, string> = {
+    "balanced": "Balanced",
+    "lowfat": "Low Fat",
+    "lowcarbs": "Low Carb",
+    "highprotein": "High Protein"
+  }
+
     return (
         <Box textAlign="center" fontSize="xl">
         <Grid minH="100vh" p={3}>
@@ -81,7 +88,7 @@ export const GetUserInformation = () => {
                 </NumberInputStepper>
               </NumberInput>
 
-              <FormLabel marginTop={5} marginLeft={1}>Height:</FormLabel>
+              <FormLabel marginTop={5} marginLeft={1}>Height (in):</FormLabel>
               <NumberInput step={10} >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -89,7 +96,6 @@ export const GetUserInformation = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-
 
               <FormLabel marginTop={5} marginLeft={1}>Weight Goal:</FormLabel>
               <Select placeholder="Select Weight Goal" required>
@@ -107,6 +113,15 @@ export const GetUserInformation = () => {
                   )
                 })}
               </Select>
+
+              <FormLabel marginTop={5} marginLeft={1}>Diet Type:</FormLabel>
+              <Select placeholder="Select Diet Type" required>
+                {Object.entries(dietTypeRecord).map(([value, label]) => {
+                  return (
+                    <option value={value}>{label}</option>
+                  )
+                })}
+                </Select>
             </FormControl>
           </VStack>
         </Grid>
