@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Button, Image, Text } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 
-interface Recipe {
-  id: number;
-  name: string;
-  image: string;
-  calories: number,
-  protein: number,
-  fat: number,
-  carbs: number
-}
+import { Recipe } from './recipeModel';
 
 interface Props {
   recipes: Recipe[];
@@ -17,7 +9,7 @@ interface Props {
 
 export const RecipeCards: React.FC<Props> = ({ recipes }) => {
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
-
+  const [showImage, setShowImage] = useState(false);
   const handleRateAndNext = (rating: number) => {
     console.log(`Rated recipe ${recipes[currentRecipeIndex].id} with ${rating}`);
     if (currentRecipeIndex < recipes.length - 1) {
@@ -30,13 +22,22 @@ export const RecipeCards: React.FC<Props> = ({ recipes }) => {
   return (
     <Box textAlign="center">
       {recipes.length > 0 && (
-        <Box>
+        <VStack>
+          {showImage?
           <Image src={recipes[currentRecipeIndex].image} alt={`Recipe ${currentRecipeIndex}`} />
-          <Text>{recipes[currentRecipeIndex].name}</Text>
+          :
+          <VStack >
+          <p>{recipes[currentRecipeIndex].calories}</p>
+          <p></p>
+          </VStack>
+        } 
+         <Text>{recipes[currentRecipeIndex].name}</Text>
+          <HStack>
           {[1, 2, 3, 4, 5].map(rating => (
             <Button key={rating} onClick={() => handleRateAndNext(rating)}>{rating}</Button>
           ))}
-        </Box>
+          </HStack>
+        </VStack>
       )}
       {recipes.length === 0 && <Text>No recipes found.</Text>}
     </Box>

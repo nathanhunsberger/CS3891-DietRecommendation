@@ -15,16 +15,23 @@ import {
     Radio,
     HStack,
     Button,
+    Input,
+    Textarea,
 } from "@chakra-ui/react"
 import { ColorModeSwitcher } from "./ColorModeSwitcher"
 import { ChangeEvent } from "react"
 // import { Formik, FormikProps } from 'formik';
 import { Field, FieldInputProps, Form, Formik, FormikProps } from 'formik';
 import axios from 'axios';
+import { fetchSeedRecipes } from "./RecommendationFetcher";
+import { Recipe } from "./recipeModel";
 
-export const GetUserInformation = () => {
-    const [age, setAge] = React.useState(0);
+interface formProps {
+    setSeeds: (newValue: Recipe[]) => void
+}
 
+export const GetUserInformation: React.FC<formProps> = ({
+    setSeeds }) => {
     const weightGoalRecord: Record<string, string> = {
         "extremelose": "Extreme Weight Loss",
         "weightlose": "Moderate Weight Loss",
@@ -59,8 +66,10 @@ export const GetUserInformation = () => {
         weightGoal: string;
         exerciseLevel: string;
         dietType: string;
+        description: string;
     };
 
+    
 
     return (
         <Box textAlign="center" fontSize="xl">
@@ -77,7 +86,8 @@ export const GetUserInformation = () => {
                             height: 60,
                             weightGoal: '',
                             exerciseLevel: '',
-                            dietType: ''
+                            dietType: '',
+                            description: ''
                         }}
                         onSubmit={async (values, actions) => {
                             //metric conversions
@@ -85,29 +95,31 @@ export const GetUserInformation = () => {
                             values.weight = 0.453592 * values.weight;
 
                             const options = {
-                              method: 'GET',
-                              url: 'https://fitness-calculator.p.rapidapi.com/macrocalculator',
-                              params: {
-                                age: values.age,
-                                gender: values.gender,
-                                height: values.height,
-                                weight: values.weight,
-                                activitylevel: values.exerciseLevel,
-                                goal: values.weightGoal
-                              },
-                              headers: {
-                                'X-RapidAPI-Key': '60b6995f3fmsh88b2eb3fcb9b907p131589jsn3a22f9859c14',
-                                'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
-                              }
+                                method: 'GET',
+                                url: 'https://fitness-calculator.p.rapidapi.com/macrocalculator',
+                                params: {
+                                    age: values.age,
+                                    gender: values.gender,
+                                    height: values.height,
+                                    weight: values.weight,
+                                    activitylevel: values.exerciseLevel,
+                                    goal: values.weightGoal
+                                },
+                                headers: {
+                                    'X-RapidAPI-Key': '60b6995f3fmsh88b2eb3fcb9b907p131589jsn3a22f9859c14',
+                                    'X-RapidAPI-Host': 'fitness-calculator.p.rapidapi.com'
+                                }
                             };
-                            
+
                             try {
                                 const response = await axios.request(options);
-                                const macros = response.data.data[values.dietType];
-                                
+                                const macros: any = response.data.data[values.dietType];
+                                const recipes = await fetchSeedRecipes(response.data.data.calorie, macros.protein, macros.fat, macros.carbs, values.description);
+                                console.log(recipes);
+                               
                             } catch (error) {
                                 console.error(error);
-                            } 
+                            }
                         }}
                     >
                         {(props) => (
@@ -148,7 +160,7 @@ export const GetUserInformation = () => {
                                             <FormLabel marginTop={5} marginLeft={1}>Weight (lb):</FormLabel>
                                             <NumberInput step={10} {...field} onChange={(val) =>
                                                 form.setFieldValue(field.name, val)} >
-                                                <NumberInputField  required />
+                                                <NumberInputField required />
                                                 <NumberInputStepper>
                                                     <NumberIncrementStepper />
                                                     <NumberDecrementStepper />
@@ -157,13 +169,14 @@ export const GetUserInformation = () => {
                                         </FormControl>
                                     )}
                                 </Field>
+
                                 <Field name='height' >
                                     {({ field, form }: { field: FieldInputProps<number>, form: FormikProps<Values> }) => (
                                         <FormControl isInvalid={((form.errors.height || form.values.height <= 0) && form.touched.height) || false}>
                                             <FormLabel marginTop={5} marginLeft={1}>Height (in):</FormLabel>
                                             <NumberInput step={1} {...field} onChange={(val) =>
                                                 form.setFieldValue(field.name, val)} >
-                                                <NumberInputField  required />
+                                                <NumberInputField required />
                                                 <NumberInputStepper>
                                                     <NumberIncrementStepper />
                                                     <NumberDecrementStepper />
@@ -172,6 +185,7 @@ export const GetUserInformation = () => {
                                         </FormControl>
                                     )}
                                 </Field>
+
                                 <Field name='weightGoal' >
                                     {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
                                         <FormControl isInvalid={((form.errors.weightGoal || form.values.weightGoal == '') && form.touched.weightGoal) || false}>
@@ -211,6 +225,14 @@ export const GetUserInformation = () => {
                                                     )
                                                 })}
                                             </Select>
+                                        </FormControl>
+                                    )}
+                                </Field>
+                                <Field name='description' >
+                                    {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
+                                        <FormControl isInvalid={(form.errors.description && form.touched.height) || false}>
+                                            <FormLabel marginTop={5} marginLeft={1}>Describe your desired recipes:</FormLabel>
+                                            <Textarea overflowWrap={"normal"} size="md"{...field} verticalAlign="text-top"></Textarea>
                                         </FormControl>
                                     )}
                                 </Field>
