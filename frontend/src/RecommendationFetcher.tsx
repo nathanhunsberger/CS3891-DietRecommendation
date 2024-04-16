@@ -39,6 +39,7 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
         protein: item.ProteinContent,
         fat: item.FatContent,
         carbs: item.CarbohydrateContent,
+        servings: item.RecipeServings || 1,
         description: he.decode(item.Description)
       }));
     }

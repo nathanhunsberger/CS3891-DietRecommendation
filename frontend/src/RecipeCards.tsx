@@ -45,6 +45,7 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
               <Badge colorScheme="red" p="2">Protein: {recipes[currentRecipeIndex].protein}g</Badge>
               <Badge colorScheme="purple" p="2">Fat: {recipes[currentRecipeIndex].fat}g</Badge>
               <Badge colorScheme="orange" p="2">Carbs: {recipes[currentRecipeIndex].carbs}g</Badge>
+              {/* <Badge colorScheme="yellow" p="2">Servings: {recipes[currentRecipeIndex].servings}</Badge> */}
             </HStack>
           </VStack>
           <HStack spacing={2}>
