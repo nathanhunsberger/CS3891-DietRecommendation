@@ -29,7 +29,7 @@ export const PopupRecipe: React.FC<Props> = ({ recommendation }) => {
                     <Text marginBottom={5}fontStyle='italic' fontSize='medium' noOfLines={6}>{recommendation.description}</Text>
                     
                     <Text>Cooking Instructions:</Text>
-                    <UnorderedList spacing={1}>
+                    <UnorderedList spacing={1} textAlign={"left"}>
                         {recommendation.instructions?.map(instruction => (
 
                             <ListItem>

@@ -14,7 +14,7 @@ export const RecommendationPage: React.FC<Props> = ({ recommendations }) => {
     const [currentRecipe, setCurrentRecipe] = useState<Recipe | undefined>(undefined)
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} >
+            <Modal isOpen={isOpen} onClose={onClose} size={"4xl"} >
                 <ModalOverlay />
                 <ModalContent width="800px" >
                     {currentRecipe && <PopupRecipe recommendation={currentRecipe} />}
