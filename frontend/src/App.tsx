@@ -9,7 +9,7 @@ import { tempRecipes } from "./tmp"
 import {RecommendationPage} from "./RecommendationPage"
 export const App = () => {
   const [seeds, setSeeds] = useState<Recipe[]>([]);
-  const [recommendations, setRecommendations] = useState<Recipe[]>(tempRecipes);
+  const [recommendations, setRecommendations] = useState<Recipe[]>([]);
   return (
     <ChakraProvider theme={theme} >
       <Grid minH="100vh" p={3}>

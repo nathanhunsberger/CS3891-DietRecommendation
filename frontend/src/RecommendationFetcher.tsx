@@ -31,6 +31,9 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
   try {
     const response = await axios.get(`http://127.0.0.1:8081/get-seeds?${params}`);
     if (response.data) {
+      const instructionString = response.data.instructions;
+      const cleanInstructions = instructionString.replace('c("', '').replace('")', '');
+      const instructions = cleanInstructions.split('", "');
       return response.data.map((item: any) => ({
         id: item.RecipeId,
         name: he.decode(item.Name),
@@ -40,7 +43,8 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
         fat: item.FatContent,
         carbs: item.CarbohydrateContent,
         servings: item.RecipeServings || 1,
-        description: he.decode(item.Description)
+        description: he.decode(item.Description),
+        instructions: instructions
       }));
     }
     return [];
