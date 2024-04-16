@@ -32,7 +32,7 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
   if (isLoading) {
     return (
       <VStack>
-      <Text size="xl">Hold Up.... Let Him Cook</Text>
+      <Text fontSize="3xl" fontWeight="bold">Hold Up.... Let Him Cook</Text>
       <Box textAlign="center" mt="5" mx="auto" p="5" bg={bg} color={color} borderRadius="lg" boxShadow="2xl">
         <Image 
           src="/secret_sauce.gif"
