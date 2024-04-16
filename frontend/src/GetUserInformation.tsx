@@ -224,9 +224,9 @@ export const GetUserInformation: React.FC<formProps> = ({
                             </Field>
                             <Field name='description' >
                                 {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
-                                    <FormControl isInvalid={(form.errors.description && form.touched.height) || false}>
+                                    <FormControl isInvalid={((form.errors.description || form.values.description.length < 0) && form.touched.description) || false}>
                                         <FormLabel marginTop={2} marginLeft={1}>Describe your desired recipes:</FormLabel>
-                                        <Textarea overflowWrap={"normal"} size="md"{...field} verticalAlign="text-top"></Textarea>
+                                        <Textarea overflowWrap={"normal"} size="md"{...field} verticalAlign="text-top" required></Textarea>
                                     </FormControl>
                                 )}
                             </Field>

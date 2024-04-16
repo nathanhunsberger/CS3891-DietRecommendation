@@ -37,6 +37,13 @@ export const PopupRecipe: React.FC<Props> = ({ recommendation }) => {
                             </ListItem>
                         ))}
                         </UnorderedList>
+                    <UnorderedList spacing={1} textAlign={"left"}>
+                        {recommendation.ingredients?.map(ingredient => (
+                            <ListItem>
+                           {ingredient}
+                            </ListItem>
+                        ))}
+                        </UnorderedList>
             </VStack>
         </Box>
     )
