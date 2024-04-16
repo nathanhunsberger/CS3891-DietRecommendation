@@ -45,7 +45,6 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
               <Badge colorScheme="red" p="2">Protein: {recipes[currentRecipeIndex].protein}g</Badge>
               <Badge colorScheme="purple" p="2">Fat: {recipes[currentRecipeIndex].fat}g</Badge>
               <Badge colorScheme="orange" p="2">Carbs: {recipes[currentRecipeIndex].carbs}g</Badge>
-              <Text>Click for details</Text>
             </HStack>
           </VStack>
           <HStack spacing={2}>
@@ -55,6 +54,7 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
               </Button>
             ))}
           </HStack>
+          <Text fontSize="xs" fontWeight="bold">{"Click for details"}</Text>
         </VStack>
       )}
       {recipes.length === 0 && <Text>No recipes found.</Text>}

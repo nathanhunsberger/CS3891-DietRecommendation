@@ -15,9 +15,9 @@ export const RecommendationPage: React.FC<Props> = ({ recommendations }) => {
             {recommendations.length > 0 && recommendations.map((recommendation) => {
                 return (
                     <GridItem>
-                    <Box textAlign="center" mt="2" mx="auto" maxWidth="225px" height="250px" p="2" bg={bg} color={color} borderRadius="lg" boxShadow="2xl">
+                    <Box textAlign="center" mt="2" mx="auto" maxWidth="275px" height="275px" p="2" bg={bg} color={color} borderRadius="lg" boxShadow="2xl">
                         <VStack>
-                        <Text fontSize="md" fontWeight="bold">{recommendation.name}</Text>
+                        <Text fontSize="md" fontWeight="bold" noOfLines={2} lineHeight="tall" height="3rem">{recommendation.name}</Text>
                             <Image
                                 src={recommendation.image}
                                 alt={`Recipe ${1}`}
@@ -36,7 +36,7 @@ export const RecommendationPage: React.FC<Props> = ({ recommendations }) => {
                                     <Badge colorScheme="purple" p="2">Fat: {recommendation.fat}g</Badge>
                                     <Badge colorScheme="orange" p="2">Carbs: {recommendation.carbs}g</Badge>
                                 </HStack>
-                                <Text>Click for details</Text>
+                                <Text fontSize="xs" fontWeight="bold">{"Click for details"}</Text>
                             </VStack>
                         </VStack>
                     </Box>
