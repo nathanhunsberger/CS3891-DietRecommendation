@@ -31,9 +31,6 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
   try {
     const response = await axios.get(`http://127.0.0.1:8081/get-seeds?${params}`);
     if (response.data) {
-      const instructionString = response.data.instructions;
-      const cleanInstructions = instructionString.replace('c("', '').replace('")', '');
-      const instructions = cleanInstructions.split('", "');
       return response.data.map((item: any) => ({
         id: item.RecipeId,
         name: he.decode(item.Name),
@@ -43,8 +40,7 @@ export const fetchSeedRecipes = async (calories: any, protein: any, fat: any, ca
         fat: item.FatContent,
         carbs: item.CarbohydrateContent,
         servings: item.RecipeServings || 1,
-        description: he.decode(item.Description),
-        instructions: instructions
+        description: he.decode(item.Description)
       }));
     }
     return [];
@@ -63,6 +59,9 @@ export const fetchRecommendations = async (seedIds: string[], ratings: string[])
   try {
     const response = await axios.get(`http://127.0.0.1:8081/get-all-recommendations?${params}`);
     if (response.data) {
+      // const instructionString = response.data.instructions;
+      // const cleanInstructions = instructionString;
+      // const instructions = cleanInstructions;
       return response.data.map((item: any) => ({
         id: item.RecipeId,
         name: he.decode(item.Name),
@@ -72,7 +71,8 @@ export const fetchRecommendations = async (seedIds: string[], ratings: string[])
         fat: item.FatContent,
         carbs: item.CarbohydrateContent,
         description: he.decode(item.Description),
-        instructions: item.RecipeInstructions
+        instructions: item.RecipeInstructions.replace('c("', '').replace('")', '').split('", "'),
+        servings: item.RecipeServings || 1
       }));
     }
     return [];

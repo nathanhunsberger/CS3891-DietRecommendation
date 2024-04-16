@@ -11,6 +11,7 @@ interface Props {
 
 export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) => {
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const bg = useColorModeValue("white", "gray.800");
   const color = useColorModeValue("gray.800", "white");
 
@@ -19,12 +20,27 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
     if (currentRecipeIndex < recipes.length - 1) {
       setCurrentRecipeIndex(currentRecipeIndex + 1); // Move to next recipe
     } else {
+      setIsLoading(true);
       const recipeIDs = recipes.map(recipe => recipe.id.toString());
       const reviews = recipes.map(recipe => recipe.review?.toString() || "0");
       const recommendations = await fetchRecommendations(recipeIDs, reviews);
+      setIsLoading(false);
       setRecommendations(recommendations);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Box textAlign="center" mt="5" mx="auto" p="5" bg={bg} color={color} borderRadius="lg" boxShadow="2xl">
+        <Image 
+          src="/secret_sauce.gif"
+          alt="Loading..."
+          boxSize="800px"
+        />
+        <Text>Loading your recommendations...</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box textAlign="center" mt="5" mx="auto" maxWidth="md" p="5" bg={bg} color={color} borderRadius="lg" boxShadow="2xl">
