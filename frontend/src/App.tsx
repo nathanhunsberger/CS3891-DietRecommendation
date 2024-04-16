@@ -6,15 +6,16 @@ import { GetUserInformation } from "./GetUserInformation"
 import { Recipe } from "./recipeModel"
 import { RecipeCards } from "./RecipeCards"
 import { tempRecipes } from "./tmp"
+import {RecommendationPage} from "./RecommendationPage"
 export const App = () => {
   const [seeds, setSeeds] = useState<Recipe[]>([]);
-  const [recommendations, setRecommendations] = useState<Recipe[]>([]);
+  const [recommendations, setRecommendations] = useState<Recipe[]>(tempRecipes);
   return (
     <ChakraProvider theme={theme} >
       <Grid minH="100vh" p={3}>
       <ColorModeSwitcher justifySelf="flex-end" />
       {recommendations.length > 0?
-      <p>Recommendations:</p>
+      <RecommendationPage recommendations={recommendations}></RecommendationPage>
       :
       <>
       {seeds.length === 0 ?

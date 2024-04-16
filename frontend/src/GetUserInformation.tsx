@@ -19,8 +19,6 @@ import {
     Textarea,
 } from "@chakra-ui/react"
 
-import { ChangeEvent } from "react"
-// import { Formik, FormikProps } from 'formik';
 import { Field, FieldInputProps, Form, Formik, FormikProps } from 'formik';
 import axios from 'axios';
 import { fetchSeedRecipes } from "./RecommendationFetcher";
@@ -76,10 +74,10 @@ export const GetUserInformation: React.FC<formProps> = ({
             <VStack width={'80%'}>
                 <Formik
                     initialValues={{
-                        age: 20,
-                        gender: '',
-                        weight: 100,
-                        height: 60,
+                        age: 22,
+                        gender: 'male',
+                        weight: 120,
+                        height: 72,
                         weightGoal: '',
                         exerciseLevel: '',
                         dietType: '',
@@ -123,7 +121,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='age' >
                                 {({ field, form }: { field: FieldInputProps<number>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={!!(form.errors.age || form.values.age <= 0)}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Age:</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Age:</FormLabel>
                                         <NumberInput step={10} {...field} onChange={(val) =>
                                             form.setFieldValue(field.name, val)} >
                                             <NumberInputField required />
@@ -139,7 +137,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='gender'>
                                 {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={((form.errors.gender || form.values.gender === '') && form.touched.gender) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Gender:</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Gender:</FormLabel>
                                         <RadioGroup >
                                             <HStack>
                                                 <Radio isRequired {...field} value='male'>Male</Radio>
@@ -153,7 +151,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='weight' >
                                 {({ field, form }: { field: FieldInputProps<number>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={((form.errors.weight || form.values.weight <= 0) && form.touched.weight) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Weight (lb):</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Weight (lb):</FormLabel>
                                         <NumberInput step={10} {...field} onChange={(val) =>
                                             form.setFieldValue(field.name, val)} >
                                             <NumberInputField required />
@@ -169,7 +167,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='height' >
                                 {({ field, form }: { field: FieldInputProps<number>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={((form.errors.height || form.values.height <= 0) && form.touched.height) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Height (in):</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Height (in):</FormLabel>
                                         <NumberInput step={1} {...field} onChange={(val) =>
                                             form.setFieldValue(field.name, val)} >
                                             <NumberInputField required />
@@ -185,7 +183,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='weightGoal' >
                                 {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={((form.errors.weightGoal || form.values.weightGoal == '') && form.touched.weightGoal) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Weight Goal:</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Weight Goal:</FormLabel>
                                         <Select placeholder="Select Weight Goal" {...field} required>
                                             {Object.entries(weightGoalRecord).map(([value, label]) => {
                                                 return (
@@ -199,7 +197,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='exerciseLevel' >
                                 {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={((form.errors.exerciseLevel || form.values.exerciseLevel == '') && form.touched.exerciseLevel) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Exercise Level:</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Exercise Level:</FormLabel>
                                         <Select placeholder="Select Exercise Level" required {...field}>
                                             {Object.entries(exerciseLevelRecord).map(([value, label]) => {
                                                 return (
@@ -213,7 +211,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='dietType' >
                                 {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={((form.errors.weightGoal || form.values.dietType == '') && form.touched.dietType) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Diet Type:</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Diet Type:</FormLabel>
                                         <Select placeholder="Select Diet Type" {...field} required>
                                             {Object.entries(dietTypeRecord).map(([value, label]) => {
                                                 return (
@@ -227,7 +225,7 @@ export const GetUserInformation: React.FC<formProps> = ({
                             <Field name='description' >
                                 {({ field, form }: { field: FieldInputProps<string>, form: FormikProps<Values> }) => (
                                     <FormControl isInvalid={(form.errors.description && form.touched.height) || false}>
-                                        <FormLabel marginTop={5} marginLeft={1}>Describe your desired recipes:</FormLabel>
+                                        <FormLabel marginTop={2} marginLeft={1}>Describe your desired recipes:</FormLabel>
                                         <Textarea overflowWrap={"normal"} size="md"{...field} verticalAlign="text-top"></Textarea>
                                     </FormControl>
                                 )}

@@ -39,12 +39,13 @@ export const RecipeCards: React.FC<Props> = ({ recipes, setRecommendations }) =>
           />
           <VStack spacing={1}>
             <Text fontSize="2xl" fontWeight="bold">{recipes[currentRecipeIndex].name}</Text>
-            <Text fontSize="md" fontStyle="italic">{recipes[currentRecipeIndex].description}</Text>
+            {/* <Text fontSize="md" fontStyle="italic">{recipes[currentRecipeIndex].description}</Text> */}
             <HStack spacing={4}>
               <Badge colorScheme="green" p="2">Calories: {recipes[currentRecipeIndex].calories}</Badge>
               <Badge colorScheme="red" p="2">Protein: {recipes[currentRecipeIndex].protein}g</Badge>
               <Badge colorScheme="purple" p="2">Fat: {recipes[currentRecipeIndex].fat}g</Badge>
               <Badge colorScheme="orange" p="2">Carbs: {recipes[currentRecipeIndex].carbs}g</Badge>
+              <Text>Click for details</Text>
             </HStack>
           </VStack>
           <HStack spacing={2}>
