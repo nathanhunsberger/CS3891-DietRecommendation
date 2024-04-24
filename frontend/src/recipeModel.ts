@@ -6,8 +6,7 @@ export interface Recipe {
     protein: number,
     fat: number,
     carbs: number,
-    servings?: number,
-    instructions?: string[],
+    instructions?: string,
     description?: string,
     review?: number
   }

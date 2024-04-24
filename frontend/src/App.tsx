@@ -6,7 +6,6 @@ import { GetUserInformation } from "./GetUserInformation"
 import { Recipe } from "./recipeModel"
 import { RecipeCards } from "./RecipeCards"
 import { tempRecipes } from "./tmp"
-import {RecommendationPage} from "./RecommendationPage"
 export const App = () => {
   const [seeds, setSeeds] = useState<Recipe[]>([]);
   const [recommendations, setRecommendations] = useState<Recipe[]>([]);
@@ -15,7 +14,7 @@ export const App = () => {
       <Grid minH="100vh" p={3}>
       <ColorModeSwitcher justifySelf="flex-end" />
       {recommendations.length > 0?
-      <RecommendationPage recommendations={recommendations}></RecommendationPage>
+      <p>Recommendations:</p>
       :
       <>
       {seeds.length === 0 ?

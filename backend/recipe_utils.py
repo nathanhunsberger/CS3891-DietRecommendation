@@ -12,7 +12,7 @@ def get_necessary_data(df):
 
   fScaler = MinMaxScaler()
 
-  needed_cols = ['RecipeId', 'Name', 'RecipeCategory', 'Description', 'Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent', 'Images', 'RecipeInstructions']
+  needed_cols = ['RecipeId', 'Images', 'Name', 'RecipeCategory', 'Calories', 'ProteinContent', 'FatContent', 'CarbohydrateContent', 'Description']
 
   filtered_data = df[needed_cols]
 
@@ -52,7 +52,7 @@ def get_recipes_for_seed(input, free_input, df, scaler, topn, desc_model, df_tfi
   all_scores_recipes = all_scores_recipes.assign(NameScore=name_scores)
   all_scores_recipes = all_scores_recipes.merge(description_scores, on='RecipeId')
 
-  all_scores_recipes['TotalScore'] = 1 * all_scores_recipes['MacroScore'] + 0.2 * all_scores_recipes[
+  all_scores_recipes['TotalScore'] = 1 * all_scores_recipes['MacroScore'] + 0.1 * all_scores_recipes[
     'NameScore'] + 0.75 * all_scores_recipes['DescriptionScore']
 
   sorted_scores = all_scores_recipes.sort_values('TotalScore', ascending=False)
